@@ -10,8 +10,13 @@ function preload() {
 }
 
 var canvas;
+var smoothing=0.8;
+var bins=512;
 var fft;
+var waveform=[];
+
 var particles = [];
+
 
 
 
@@ -19,7 +24,7 @@ var particles = [];
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    fft=new p5.FFT();
+    fft=new p5.FFT(smoothing, bins);
     angleMode(DEGREES);
 
     
@@ -37,26 +42,6 @@ function draw() {
    amp=fft.getEnergy(20, 200);
    var wave=fft.waveform();
 
-   /*  beginShape();
-    for (var i=0; i<=180; i++) { //half circle
-        var index= floor(map(i, 0, 180 ,0, wave.length-1));
-
-        var r= map(wave[index], -1, 1, 0, 350);
-        var x=r*sin(i);
-        var y=r*cos(i);
-        vertex(x,y);
-    }
-    endShape();
-    beginShape();
-    for (var i=0; i<=180; i++) { //the other half
-        var index= floor(map(i, 0, 180 ,0, wave.length-1));
-
-        var r= map(wave[index], -1, 1, 0, 350);
-        var x=r*-sin(i);
-        var y=r*cos(i);
-        vertex(x,y);
-    } 
-    endShape(); */
 
     for (var t=-1; t<=1; t+=2) { //draw two half circles
         beginShape();
@@ -125,5 +110,5 @@ class Particle{
 }
 
 function windowResized() {
-    canvas.resize(windowWidth, windowHeight);
+    resizeCanvas(windowWidth, windowHeight);
 }
