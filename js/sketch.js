@@ -5,7 +5,7 @@
 var song;
 
 function preload() {
-    song=loadSound('mp3/renai.mp3');
+    song=loadSound('mp3/Luis Fonsi - Despacito ft. Daddy Yankee.mp3');
 
 }
 
@@ -16,11 +16,16 @@ let fft;
 let waveform=[];
 let r=100;
 let spectrum=[];
+let min=150;
+let distFromCenter=[];
+
 
 
 var particles = [];
-let size=50;
-let num=3;
+let size=15;
+let num=10;
+let grid=[];
+
 
 
 
@@ -29,43 +34,84 @@ let num=3;
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
-    fft=new p5.FFT(smoothing, bins);
+    fft=new p5.FFT();
     angleMode(DEGREES);
+     for (let boxes=0; boxes<num; boxes++) {
+        grid[boxes]=[];
+        for (let boxes2=0; boxes2<num; boxes2++) {
+            grid[boxes][boxes2]=[];
+            for (let boxes3=0; boxes3<num; boxes3++){
+                grid[boxes][boxes2][boxes3]=floor(random(2));
 
-    
+                let offset=size/2 -num/2*size
+                let x=boxes*size +offset;
+                let y=boxes2*size +offset;
+                let z=boxes3*size +offset;
+                let distance=dist(x,y,z,0,0,0);
 
+                distFromCenter.push({boxes,boxes2,boxes3,distance});
+                console.log(distFromCenter);
+
+            }
+        }
+   }
+   distFromCenter.sort(compareDistances);
 }
 
+function compareDistances(a,b) { //compare distance 
+    return a.distance - b.distance;
+
+
+}
 function draw() {
    background(255);
+   fill(255,0,0);
    orbitControl();
-   stroke(200);
+   spectrum=fft.analyze();
+   let vol= fft.getEnergy(20,140);
+   if (vol>240) {
+       stroke(grid[boxes][boxes2][boxes3],0,200);
+   } else {
+        noStroke();
+   }
+   let totalCubes=num*num*num;
+   for (let i=0; i<totalCubes; i++) {
+    let pos=distFromCenter[i];
+    let color=map(spectrum[i],0, 255, min,255);
+    grid[pos.boxes][pos.boxes2][pos.boxes3]=color;
+   }
+
    /*stroke(200);
    strokeWeight(2);
    noFill();*/
+   noFill();
+   let offset=size/2 -num/2*size
+   translate(offset, offset, offset);
    for (let boxes=0; boxes<num; boxes++) {
         for (let boxes2=0; boxes2<num; boxes2++) {
             for (let boxes3=0; boxes3<num; boxes3++){
+                if (grid[boxes][boxes2][boxes3]>min) {
+                    fill(grid[boxes][boxes2][boxes3],0,200);
+                } else {
+                    noFill();
+                }
+                
                 push();
                 translate(boxes*size, boxes2*size, boxes3*size);
-                box(size);
+                box(size- size/4);
                 pop();
             }
             
         }
-        
    }
-   fill(255,0,0);
-   box(size);
+
    
    
 
    fft.analyze();
    amp=fft.getEnergy(20, 200);
    waveform=fft.waveform();
-   spectrum=fft.analyze();
-   let vol= fft.getEnergy(20,140);
-   console.log(vol);
+   
 
 
 
