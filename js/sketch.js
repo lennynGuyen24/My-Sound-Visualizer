@@ -19,6 +19,8 @@ let spectrum=[];
 
 
 var particles = [];
+let size=50;
+let num=3;
 
 
 
@@ -37,9 +39,16 @@ function setup() {
 function draw() {
    background(220);
    stroke(200);
+   /*stroke(200);
    strokeWeight(2);
-   noFill();
-   translate(width/2, height/2);
+   noFill();*/
+   for (let boxes=0; boxes<num; boxes++) {
+        push();
+        translate(boxes*size,0);
+        box(size);
+        pop();
+   }
+   
 
    fft.analyze();
    amp=fft.getEnergy(20, 200);
@@ -57,12 +66,12 @@ function draw() {
     ellipse(a,w,1,1);
 
    } */
-//Draw frequency domain graph
+/* //Draw frequency domain graph
     for(let i=0; i<waveform.kength; i++){
         let y= map(spectrum[i], 0, 255, 0, height);
         line(i, height, i, height-y);
 
-    }
+    } */
 
 /* //Draw waveform in circle
     for (var t=-1; t<=1; t+=2) { //draw two half circles
