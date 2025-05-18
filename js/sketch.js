@@ -5,7 +5,7 @@
 var song;
 
 function preload() {
-    song=loadSound('mp3/swanRemix.mp3');
+    song=loadSound('mp3/renai.mp3');
 
 }
 
@@ -37,17 +37,27 @@ function setup() {
 }
 
 function draw() {
-   background(220);
+   background(255);
+   orbitControl();
    stroke(200);
    /*stroke(200);
    strokeWeight(2);
    noFill();*/
    for (let boxes=0; boxes<num; boxes++) {
-        push();
-        translate(boxes*size,0);
-        box(size);
-        pop();
+        for (let boxes2=0; boxes2<num; boxes2++) {
+            for (let boxes3=0; boxes3<num; boxes3++){
+                push();
+                translate(boxes*size, boxes2*size, boxes3*size);
+                box(size);
+                pop();
+            }
+            
+        }
+        
    }
+   fill(255,0,0);
+   box(size);
+   
    
 
    fft.analyze();
