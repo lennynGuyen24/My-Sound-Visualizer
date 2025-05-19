@@ -1,8 +1,8 @@
 
-
+//Original idea + tutorial: https://youtu.be/8O5aCwdopLo?si=s1detCu0abm2zs2s
 
 var song
-let songs = ['mp3/swanRemix.mp3', 'mp3/renai.mp3', 'mp3/despacito.mp3', 'mp3/almondChoco.mp3', 'mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/hyperR.mp3', 'mp3/tellUrWorld.mp3']; // Add your song file paths here
+let songs = ['mp3/renai.mp3', 'mp3/almondChoco.mp3', 'mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/hyperR.mp3', 'mp3/tellUrWorld.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/2mins.mp3', 'mp3/swanRemix.mp3']; // Add your song file paths here
 let currentSongIndex = 0;
 let changeSongButton;
 
@@ -81,7 +81,7 @@ function setup() {
     console.log('Now playing:', songs[currentSongIndex]);
    })
    //play button
-   playButton = createButton('play');
+   playButton = createButton('Play');
    playButton.parent(buttonSpace);
    playButton.addClass('playButton');
    playButton.mousePressed(()=>{
@@ -89,7 +89,7 @@ function setup() {
     loop();
    });
    //pause button
-   pauseButton = createButton('pause');
+   pauseButton = createButton('Pause');
    pauseButton.parent(buttonSpace);
    pauseButton.addClass('pauseButton')
    pauseButton.mousePressed(() => {
