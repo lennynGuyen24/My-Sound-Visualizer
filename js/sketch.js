@@ -36,6 +36,7 @@ let smoothedAvgFreq = 0;
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
+    
     colorMode(HSB, 255);
     fft=new p5.FFT();
     angleMode(DEGREES);
@@ -84,9 +85,10 @@ function compareDistances(a,b) { //compare distance
 
 }
 function draw() {
+   //orbitControl(); //need to fix this
    background(255,30);
    fill(255,0,0);
-   //orbitControl();
+   
    spectrum=fft.analyze();
    let vol= fft.getEnergy(20,140);
    if (vol>240) {

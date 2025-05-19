@@ -7,6 +7,7 @@ body{
   background: #ffe0ec;
   color: #5a5a5a;
   font-size: 12px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   border: none;
   padding: 10px 24px;
   border-radius: 10px;
@@ -16,6 +17,7 @@ body{
 
 .playButton:hover{
     background: #e0f7fa;
+    font-weight: 700;
     color: #222;
 }
 
@@ -24,6 +26,7 @@ body{
     background: #e0f7fa;
     color: #5a5a5a;
     font-size: 12px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     border: none;
     padding: 10px 24px;
     border-radius: 10px;
@@ -32,6 +35,7 @@ body{
 }
 .pauseButton:hover{
     background: #ffe0ec;
+    font-weight: 700;
     color: #222;
 }
 #buttonSpace {
