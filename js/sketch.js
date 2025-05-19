@@ -71,7 +71,7 @@ function draw() {
    spectrum=fft.analyze();
    let vol= fft.getEnergy(20,140);
    if (vol>240) {
-       stroke(255,255,0,20);
+      stroke(random(255),random(255),random(255));
    } else {
         stroke(200);
    }
@@ -151,33 +151,6 @@ function draw() {
 
 
 
-
-//Draw time domain graph
-   /* for (let a=0; a<waveform.length; a++) { 
-    let w= height/2 + map(waveform[a],-1,1, -r,r);
-    ellipse(a,w,1,1);
-
-   } */
-/* //Draw frequency domain graph
-    for(let i=0; i<waveform.kength; i++){
-        let y= map(spectrum[i], 0, 255, 0, height);
-        line(i, height, i, height-y);
-
-    } */
-
- //Draw waveform in circle
-   /*  for (var t=-1; t<=1; t+=2) { //draw two half circles
-        beginShape();
-        for (var i=0; i<=360; i+=0.5) { //half circle
-            var index= floor(map(i, 0, 180 ,0, waveform.length-1));
-
-            var r= map(waveform[index], -1, 1, 150, 350);
-            var x=r*sin(i)*t;
-            var y=r*cos(i);
-            vertex(x,y);
-        }
-        endShape();
-    }   */
     var p = new Particle();
     
     particles.push(p);
