@@ -25,6 +25,7 @@ var particles = [];
 let size=20;
 let num=10;
 let grid=[];
+let smoothedAvgFreq = 0; 
 
 
 
@@ -109,10 +110,13 @@ function draw() {
     avgFreq += spectrum[i];
     }
    avgFreq /= spectrum.length;
+
+   // Smooth the average frequency for less jitter
+   smoothedAvgFreq = lerp(smoothedAvgFreq, avgFreq, 0.1);
    // Map average frequency to rotation angles
-   let rotX = map(avgFreq*10, 0, 255, 0, PI/2)+frameCount * 0.01;;
-   let rotY = map(avgFreq, 0, 255, 0, PI) + frameCount * 0.013;
-   let rotZ = map(avgFreq, 0, 255, 0, PI/4) +  frameCount * 0.008 ;
+   let rotX = map(smoothedAvgFreq*10, 0, 255, 0, PI)+frameCount * 0.01;;
+   let rotY = map(smoothedAvgFreq*20, 0, 255, 0, TWO_PI) + frameCount * 0.013;
+   let rotZ = map(smoothedAvgFreq*20, 0, 255, 0, PI) +  frameCount * 0.008 ;
 
    push();
    rotateX(rotX);
