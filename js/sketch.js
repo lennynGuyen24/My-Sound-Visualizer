@@ -111,10 +111,10 @@ function draw() {
    spectrum=fft.analyze();
    let vol= fft.getEnergy(20,140);
    if (vol>240) {
-      stroke(random(255),70,255);
+      stroke(random(255),50,255);
    } else if (vol>220 && vol<240) {
-        stroke(0,0,220);
-        strokeWeight(0.5);
+        stroke(0,1,220);
+        strokeWeight(0.3);
    } else {
         noStroke();
    }
