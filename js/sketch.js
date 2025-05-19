@@ -2,12 +2,13 @@
 
 
 var song
-let songs = ['mp3/swanRemix.mp3', 'mp3/renai.mp3', 'mp3/despacito.mp3', 'mp3/almondChoco.mp3', 'mp3/magnetic.mp3']; // Add your song file paths here
+let songs = ['mp3/swanRemix.mp3', 'mp3/renai.mp3', 'mp3/despacito.mp3', 'mp3/almondChoco.mp3', 'mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/hyperR.mp3', 'mp3/tellUrWorld.mp3']; // Add your song file paths here
 let currentSongIndex = 0;
 let changeSongButton;
 
 function preload() {
     song =loadSound(songs[currentSongIndex]);
+    console.log('Now playing:', songs[currentSongIndex]);
 
 }
 
@@ -57,7 +58,7 @@ function setup() {
                 let distance=dist(x,y,z,0,0,0);
 
                 distFromCenter.push({boxes,boxes2,boxes3,distance});
-                console.log(distFromCenter);
+                //console.log(distFromCenter);
 
             }
         }
@@ -77,7 +78,7 @@ function setup() {
         loop();
         
     });
-    console.log('song', currentSongIndex);
+    console.log('Now playing:', songs[currentSongIndex]);
    })
    //play button
    playButton = createButton('play');
