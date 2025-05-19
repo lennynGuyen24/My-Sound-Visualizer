@@ -35,6 +35,7 @@ let smoothedAvgFreq = 0;
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
+    colorMode(HSB, 255);
     fft=new p5.FFT();
     angleMode(DEGREES);
      for (let boxes=0; boxes<num; boxes++) {
@@ -65,26 +66,37 @@ function compareDistances(a,b) { //compare distance
 
 }
 function draw() {
-   background(255);
+   background(255,30);
    fill(255,0,0);
    //orbitControl();
    spectrum=fft.analyze();
    let vol= fft.getEnergy(20,140);
    if (vol>240) {
-      stroke(random(255),random(255),random(255));
+      stroke(random(255),70,255);
+   } else if (vol>220 && vol<240) {
+        stroke(0,0,220);
+        strokeWeight(0.5);
    } else {
-        stroke(200);
+        noStroke();
    }
+   
    let totalCubes=num*num*num;
-   for (let i=0; i<totalCubes; i++) {
+   /* for (let i=0; i<totalCubes; i++) {
     let pos=distFromCenter[i];
     let color=map(spectrum[i],0, 255, min,255);
     grid[pos.boxes][pos.boxes2][pos.boxes3]=color;
-   }
+   } *///Purple-ish
+   for (let i = 0; i < totalCubes; i++) {
+    let pos = distFromCenter[i];
+    // Map the index or spectrum value to a hue (0-255)
+    //let hue = map(i, 0, totalCubes, 0, 255);// Rainbow by position
+    let hue = map(spectrum[i], 0, 255, 0, 255); 
+    // For audio-reactive rainbow: 
+    grid[pos.boxes][pos.boxes2][pos.boxes3] = hue;
+}
 
-   /*stroke(200);
-   strokeWeight(2);
-   noFill();*/
+
+
    noFill();
    let offset=size/2 -num/2*size
    translate(offset, offset, offset);
@@ -126,7 +138,7 @@ function draw() {
         for (let boxes2=0; boxes2<num; boxes2++) {
             for (let boxes3=0; boxes3<num; boxes3++){
                 if (grid[boxes][boxes2][boxes3]>min) {
-                    fill(grid[boxes][boxes2][boxes3],0,200);
+                    fill(grid[boxes][boxes2][boxes3],60,255);
                 } else {
                     noFill();
                 }
@@ -146,19 +158,21 @@ function draw() {
 
    fft.analyze();
    amp=fft.getEnergy(20, 200);
-   waveform=fft.waveform();
+   if (amp > 220) {
+    particles.push(new Particle());
+    }
    
 
 
 
-    var p = new Particle();
-    
-    particles.push(p);
+  
 
-    for (var i=length; i<particles.length; i++) {
-        particles[i].update(amp>230);
+    for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update(amp > 230);
         particles[i].show();
-        
+        if (particles[i].isDead()) {
+            particles.splice(i, 1);
+        }
     }
     
 
@@ -178,31 +192,34 @@ class Particle{
     constructor(){
         let r = 200;
         this.pos = p5.Vector.random2D().mult(r);
-        
-
         this.vel = createVector(0,0);
         this.acc=this.pos.copy().normalize().mult(random(0.1,0.5));
 
-        this.w=random(3, 5);
-        this.color= [random(200,255), random(200,255), random(200,255)];
-
+        this.w=random(8, 16);
+        this.hue=random(180, 255);//pastel
+        this.lifetime=255; //fading out
 
     }
     update(cond) {
         this.vel.add(this.acc);
+        this.vel.limit(6); //prevent moving too fast
         this.pos.add(this.vel);
         if (cond) {
             this.pos.add(this.vel);
             this.pos.add(this.vel);
             this.pos.add(this.vel);
         }
+        this.lifetime -=3;
 
     }
 
     show() {
         noStroke();
-        fill(this.color);
-        ellipse(this.pos.x, this.pos.y, 10);
+        fill(this.hue,60,255,this.lifetime);
+        ellipse(this.pos.x, this.pos.y, this.w);
+    }
+    isDead() {
+        return this.lifetime<0;
     }
 }
 
