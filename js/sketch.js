@@ -5,7 +5,7 @@
 var song;
 
 function preload() {
-    song=loadSound('mp3/Luis Fonsi - Despacito ft. Daddy Yankee.mp3');
+    song=loadSound('mp3/swanRemix.mp3');
 
 }
 
@@ -22,7 +22,7 @@ let distFromCenter=[];
 
 
 var particles = [];
-let size=15;
+let size=20;
 let num=10;
 let grid=[];
 
@@ -66,13 +66,13 @@ function compareDistances(a,b) { //compare distance
 function draw() {
    background(255);
    fill(255,0,0);
-   orbitControl();
+   //orbitControl();
    spectrum=fft.analyze();
    let vol= fft.getEnergy(20,140);
    if (vol>240) {
-       stroke(grid[boxes][boxes2][boxes3],0,200);
+       stroke(255,255,0,20);
    } else {
-        noStroke();
+        stroke(200);
    }
    let totalCubes=num*num*num;
    for (let i=0; i<totalCubes; i++) {
@@ -87,6 +87,37 @@ function draw() {
    noFill();
    let offset=size/2 -num/2*size
    translate(offset, offset, offset);
+  /*  for (let boxes=0; boxes<num; boxes++) {
+        for (let boxes2=0; boxes2<num; boxes2++) {
+            for (let boxes3=0; boxes3<num; boxes3++){
+                if (grid[boxes][boxes2][boxes3]>min) {
+                    fill(grid[boxes][boxes2][boxes3],0,200);
+                } else {
+                    noFill();
+                }
+                
+                push();
+                translate(boxes*size, boxes2*size, boxes3*size);
+                box(size- size/4);
+                pop();
+            }
+            
+        }
+   } */
+   let avgFreq = 0;
+   for (let i = 0; i < spectrum.length; i++) {
+    avgFreq += spectrum[i];
+    }
+   avgFreq /= spectrum.length;
+   // Map average frequency to rotation angles
+   let rotX = map(avgFreq*10, 0, 255, 0, PI/2)+frameCount * 0.01;;
+   let rotY = map(avgFreq, 0, 255, 0, PI) + frameCount * 0.013;
+   let rotZ = map(avgFreq, 0, 255, 0, PI/4) +  frameCount * 0.008 ;
+
+   push();
+   rotateX(rotX);
+   rotateY(rotY);
+   rotateZ(rotZ);
    for (let boxes=0; boxes<num; boxes++) {
         for (let boxes2=0; boxes2<num; boxes2++) {
             for (let boxes3=0; boxes3<num; boxes3++){
@@ -104,6 +135,7 @@ function draw() {
             
         }
    }
+    pop();
 
    
    
@@ -129,8 +161,8 @@ function draw() {
 
     } */
 
-/* //Draw waveform in circle
-    for (var t=-1; t<=1; t+=2) { //draw two half circles
+ //Draw waveform in circle
+   /*  for (var t=-1; t<=1; t+=2) { //draw two half circles
         beginShape();
         for (var i=0; i<=360; i+=0.5) { //half circle
             var index= floor(map(i, 0, 180 ,0, waveform.length-1));
@@ -141,7 +173,7 @@ function draw() {
             vertex(x,y);
         }
         endShape();
-    }  */
+    }   */
     var p = new Particle();
     
     particles.push(p);
@@ -152,8 +184,6 @@ function draw() {
         
     }
     
-
-
 
 }
 
@@ -169,9 +199,12 @@ function mouseClicked() {
 
 class Particle{
     constructor(){
-        this.pos = p5.Vector.random2D().mult(250);
+        let r = 200;
+        this.pos = p5.Vector.random2D().mult(r);
+        
+
         this.vel = createVector(0,0);
-        this.acc=this.pos.copy().mult(random(0.0001,0.0001));
+        this.acc=this.pos.copy().normalize().mult(random(0.1,0.5));
 
         this.w=random(3, 5);
         this.color= [random(200,255), random(200,255), random(200,255)];
