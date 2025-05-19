@@ -16,7 +16,7 @@ body{
 }
 
 .playButton:hover{
-    background: #e0f7fa;
+    background: #eaade1;
     font-weight: 700;
     color: #222;
 }
@@ -34,7 +34,24 @@ body{
     box-shadow: 0 2px 8px #d7f6fa;
 }
 .pauseButton:hover{
-    background: #ffe0ec;
+    background: #a0f5f5;
+    font-weight: 700;
+    color: #222;
+}
+.changeSong{
+  margin:0;
+  background: #f8e7a7;
+  color: #5a5a5a;
+  font-size: 12px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #d3b578;
+}
+.changeSong:hover{
+    background: rgb(248, 222, 163);
     font-weight: 700;
     color: #222;
 }

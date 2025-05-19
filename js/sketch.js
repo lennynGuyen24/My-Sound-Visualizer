@@ -1,11 +1,13 @@
 
 
 
-
-var song;
+var song
+let songs = ['mp3/swanRemix.mp3', 'mp3/renai.mp3', 'mp3/despacito.mp3']; // Add your song file paths here
+let currentSongIndex = 0;
+let changeSongButton;
 
 function preload() {
-    song=loadSound('mp3/swanRemix.mp3');
+    song =loadSound(songs[currentSongIndex]);
 
 }
 
@@ -35,6 +37,7 @@ let smoothedAvgFreq = 0;
 
 
 function setup() {
+
     createCanvas(windowWidth, windowHeight, WEBGL);
     
     colorMode(HSB, 255);
@@ -60,8 +63,23 @@ function setup() {
         }
    }
    distFromCenter.sort(compareDistances);
+   var buttonSpace=select('#buttonSpace');
+   //change song button
+
+   changeSongButton = createButton('Change Song');
+   changeSongButton.parent(buttonSpace);
+   changeSongButton.addClass('changeSong');
+   changeSongButton.mousePressed(()=> {
+    song.stop();
+    currentSongIndex=(currentSongIndex+1) % songs.length
+    song =loadSound(songs[currentSongIndex], ()=> {
+        song.play();
+        loop();
+        
+    });
+    console.log('song', currentSongIndex);
+   })
    //play button
-   let buttonSpace=select('#buttonSpace');
    playButton = createButton('play');
    playButton.parent(buttonSpace);
    playButton.addClass('playButton');
@@ -105,11 +123,10 @@ function draw() {
     let pos=distFromCenter[i];
     let color=map(spectrum[i],0, 255, min,255);
     grid[pos.boxes][pos.boxes2][pos.boxes3]=color;
-   } *///Purple-ish
+   } *///Purple-ish-Original tutorial
    for (let i = 0; i < totalCubes; i++) {
     let pos = distFromCenter[i];
-    // Map the index or spectrum value to a hue (0-255)
-    //let hue = map(i, 0, totalCubes, 0, 255);// Rainbow by position
+    // Map the spectrum value to a hue (0-255)
     let hue = map(spectrum[i], 0, 255, 0, 255); 
     // For audio-reactive rainbow: 
     grid[pos.boxes][pos.boxes2][pos.boxes3] = hue;
@@ -178,7 +195,7 @@ function draw() {
 
    fft.analyze();
    amp=fft.getEnergy(20, 200);
-   if (amp > 220) {
+   if (amp > 200) {
     particles.push(new Particle());
     }
    
@@ -188,7 +205,7 @@ function draw() {
   
 
     for (let i = particles.length - 1; i >= 0; i--) {
-        particles[i].update(amp > 230);
+        particles[i].update(amp > 210);
         particles[i].show();
         if (particles[i].isDead()) {
             particles.splice(i, 1);
