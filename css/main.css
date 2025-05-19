@@ -2,6 +2,46 @@ body{
     margin: 0;
     overflow: hidden;
 }
+.playButton {
+  margin:0;
+  background: #ffe0ec;
+  color: #5a5a5a;
+  font-size: 12px;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #f8e1f4;
+}
+
+.playButton:hover{
+    background: #e0f7fa;
+    color: #222;
+}
+
+.pauseButton {
+    margin:0;
+    background: #e0f7fa;
+    color: #5a5a5a;
+    font-size: 12px;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #d7f6fa;
+}
+.pauseButton:hover{
+    background: #ffe0ec;
+    color: #222;
+}
+#buttonSpace {
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  gap: 20px;              
+  margin-top: 20px;
+}
+
 
 
 

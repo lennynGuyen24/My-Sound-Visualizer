@@ -10,6 +10,7 @@ function preload() {
 }
 
 var canvas;
+let playButton, pauseButton;
 let smoothing=0.8;
 let bins=512;
 let fft;
@@ -58,6 +59,23 @@ function setup() {
         }
    }
    distFromCenter.sort(compareDistances);
+   //play button
+   let buttonSpace=select('#buttonSpace');
+   playButton = createButton('play');
+   playButton.parent(buttonSpace);
+   playButton.addClass('playButton');
+   playButton.mousePressed(()=>{
+    song.play();
+    loop();
+   });
+   //pause button
+   pauseButton = createButton('pause');
+   pauseButton.parent(buttonSpace);
+   pauseButton.addClass('pauseButton')
+   pauseButton.mousePressed(() => {
+    song.pause();
+    noLoop();
+    });
 }
 
 function compareDistances(a,b) { //compare distance 
@@ -178,15 +196,7 @@ function draw() {
 
 }
 
-function mouseClicked() {
-    if (song.isPlaying()) {
-        song.pause();
-        noLoop();
-} else {
-        song.play();
-        loop();
-    }
-}
+
 
 class Particle{
     constructor(){
