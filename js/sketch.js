@@ -2,7 +2,7 @@
 
 
 var song
-let songs = ['mp3/swanRemix.mp3', 'mp3/renai.mp3', 'mp3/despacito.mp3']; // Add your song file paths here
+let songs = ['mp3/swanRemix.mp3', 'mp3/renai.mp3', 'mp3/despacito.mp3', 'mp3/almondChoco.mp3', 'mp3/magnetic.mp3']; // Add your song file paths here
 let currentSongIndex = 0;
 let changeSongButton;
 
