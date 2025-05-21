@@ -133,10 +133,10 @@ function setup() {
 
 // Handle song selection
    songSelector.changed(() => {
-        let selectedIdx = int(songSelector.value());
+        let selectedIndex = int(songSelector.value());
         if (selectedIdx !== currentSongIndex) {
             song.stop();
-            currentSongIndex = selectedIdx;
+            currentSongIndex = selectedIndex;
             song = loadSound(songs[currentSongIndex], () => {
                 song.play();
                 loop();
