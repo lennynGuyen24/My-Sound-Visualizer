@@ -2,7 +2,7 @@
 //Original idea + tutorial: https://youtu.be/8O5aCwdopLo?si=s1detCu0abm2zs2s
 
 var song
-let songs = ['mp3/renai.mp3', 'mp3/almondChoco.mp3', 'mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/hyperR.mp3', 'mp3/tellUrWorld.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/2mins.mp3', 'mp3/swanRemix.mp3']; // Add your song file paths here
+let songs = ['mp3/renai.mp3', 'mp3/almondChoco.mp3', 'mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/hyperR.mp3', 'mp3/tellUrWorld.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/2mins.mp3', 'mp3/bukanPho.mp3']; 
 let currentSongIndex = 0;
 let changeSongButton;
 
@@ -65,21 +65,21 @@ function setup() {
    }
    distFromCenter.sort(compareDistances);
    var buttonSpace=select('#buttonSpace');
-   //change song button
 
-   changeSongButton = createButton('Change Song');
-   changeSongButton.parent(buttonSpace);
-   changeSongButton.addClass('changeSong');
-   changeSongButton.mousePressed(()=> {
+   //previous song button
+   prevSongButton=createButton('Previous Song');
+   prevSongButton.parent(buttonSpace);
+   prevSongButton.addClass('changeSong');
+   prevSongButton.mousePressed(()=>{
     song.stop();
-    currentSongIndex=(currentSongIndex+1) % songs.length
-    song =loadSound(songs[currentSongIndex], ()=> {
+    currentSongIndex=(currentSongIndex-1)% songs.length;
+    song=loadSound(songs[currentSongIndex], ()=>{
         song.play();
         loop();
-        
+        songSelector.selected(currentSongIndex);
     });
     console.log('Now playing:', songs[currentSongIndex]);
-   })
+   }); 
    //play button
    playButton = createButton('Play');
    playButton.parent(buttonSpace);
@@ -87,7 +87,9 @@ function setup() {
    playButton.mousePressed(()=>{
     song.play();
     loop();
+    songSelector.selected(currentSongIndex);
    });
+
    //pause button
    pauseButton = createButton('Pause');
    pauseButton.parent(buttonSpace);
@@ -95,7 +97,57 @@ function setup() {
    pauseButton.mousePressed(() => {
     song.pause();
     noLoop();
+    songSelector.selected(currentSongIndex);
     });
+
+   //change song button
+   changeSongButton = createButton('Next Song');
+   changeSongButton.parent(buttonSpace);
+   changeSongButton.addClass('changeSong');
+   changeSongButton.mousePressed(()=> {
+    song.stop();
+    currentSongIndex=(currentSongIndex+1) % songs.length;
+    song =loadSound(songs[currentSongIndex], ()=> {
+        song.play();
+        loop();
+        songSelector.selected(currentSongIndex);
+        
+    });
+    console.log('Now playing:', songs[currentSongIndex]);
+   });
+
+   //Select songs button
+   let songSelector = createSelect();
+   songSelector.parent(buttonSpace);
+   songSelector.addClass('changeSong');
+   let songNames = [
+  "Renai Circulation-Kana Hanazawa", "Almond Chocolate-ILLIT", "Magnetic-ILLIT", "See Tinh-Hoang Thuy Linh", "Hyper Reality Show-Hatsune Miku",
+  "Tell Your World Remix-Hatsune Miku", "Kawaikute Gomen Remix-HoneyWorks", "SuMuZhe Remix-Zhang Xiaotan", "2 Phut Hon-Phao", "De Yang Gatal Gatal Sa-Bukan Pho DJ DESA Remix"
+];
+
+// Populate the dropdown with song names
+   for (let i = 0; i < songs.length; i++) {
+    songSelector.option(songNames[i], i);
+    };
+
+
+// Handle song selection
+   songSelector.changed(() => {
+        let selectedIdx = int(songSelector.value());
+        if (selectedIdx !== currentSongIndex) {
+            song.stop();
+            currentSongIndex = selectedIdx;
+            song = loadSound(songs[currentSongIndex], () => {
+                song.play();
+                loop();
+            });
+            console.log('Now playing:', songs[currentSongIndex]);
+         }
+});
+   
+
+   
+   
 }
 
 function compareDistances(a,b) { //compare distance 
@@ -251,7 +303,10 @@ class Particle{
     isDead() {
         return this.lifetime<0;
     }
+    
 }
+
+
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
