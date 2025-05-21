@@ -134,7 +134,7 @@ function setup() {
 // Handle song selection
    songSelector.changed(() => {
         let selectedIndex = int(songSelector.value());
-        if (selectedIdx !== currentSongIndex) {
+        if (selectedIndex !== currentSongIndex) {
             song.stop();
             currentSongIndex = selectedIndex;
             song = loadSound(songs[currentSongIndex], () => {
