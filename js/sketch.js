@@ -47,6 +47,8 @@ function setup() {
 
     colorMode(HSB, 255);
     fft = new p5.FFT();
+    mic = new p5.AudioIn(); //create a new mic
+    mic.start();
     angleMode(DEGREES);
     for (let boxes = 0; boxes < num; boxes++) {
         grid[boxes] = [];
@@ -71,7 +73,7 @@ function setup() {
     var buttonSpace = select('#buttonSpace');
 
     //previous song button
-    prevSongButton = createButton('Previous Song');
+    prevSongButton = createButton('⏮');
     prevSongButton.parent(buttonSpace);
     prevSongButton.addClass('changeSong');
     prevSongButton.mousePressed(() => {
@@ -95,18 +97,18 @@ function setup() {
     }); */
 
     //toggle play/pause button. Icon source: https://emojidb.org/play-button-emojis
-    playButton=createButton('▶ Play');
+    playButton = createButton('▶');
     playButton.parent(buttonSpace);
     playButton.addClass('playButton');
-    playButton.mousePressed(()=>{
-        if(!song.isPlaying()) {
+    playButton.mousePressed(() => {
+        if (!song.isPlaying()) {
             song.play();
             loop();
-            playButton.html('◼ Pause');
+            playButton.html('❚❚');
         } else {
             song.pause();
             noLoop();
-            playButton.html('▶ Play');
+            playButton.html('▶');
         }
         songSelector.selected(currentSongIndex);
     })
@@ -123,7 +125,7 @@ function setup() {
     }); */
 
     //change song button
-    changeSongButton = createButton('Next Song');
+    changeSongButton = createButton('⏭');
     changeSongButton.parent(buttonSpace);
     changeSongButton.addClass('changeSong');
     changeSongButton.mousePressed(() => {
@@ -165,6 +167,18 @@ function setup() {
             });
             console.log('Now playing:', songs[currentSongIndex]);
         }
+    });
+
+    // Create volume slider
+    window.volumeSlider = createSlider(0, 100, 50);
+    window.volumeSlider.parent(buttonSpace);
+    window.volumeSlider.addClass('sliderCust'); 
+    window.volumeSlider.position(100, 40);
+    window.volumeSlider.style('width', '100px');
+    window.volumeSlider.input(() => {
+        let val = window.volumeSlider.value() / 100;
+        window.lastSetVol = val;
+        song.setVolume(val);
     });
 
 
@@ -286,6 +300,36 @@ function draw() {
             particles.splice(i, 1);
         }
     }
+
+    //MIC INTERACTING FUNCTION!!! (change the song volume)
+    let micVol = mic.getLevel();
+    // Change the slider when the volume is out of limit
+    if (!window.lastSetVol) window.lastSetVol = 0;
+    let targetVol = constrain(micVol * 5, 0, 1);
+    if (targetVol > window.lastSetVol + 0.02) {
+        window.lastSetVol = targetVol;
+        song.setVolume(window.lastSetVol);
+        if (window.volumeSlider) window.volumeSlider.value(window.lastSetVol * 100);
+        if (window.volumeTimeout) clearTimeout(window.volumeTimeout);
+        window.volumeTimeout = setTimeout(() => {
+            window.lastSetVol = 0.5;
+            song.setVolume(window.lastSetVol);
+            if (window.volumeSlider) window.volumeSlider.value(50);
+        }, 5000);
+    }
+
+    //Draw the mic circle
+    let baseRadius = Math.min(width, height) / 10;
+    let radius = baseRadius + map(micVol, 0, 1, 0, baseRadius * 2);
+
+    push();
+    resetMatrix();
+    translate(-windowWidth / 2 + baseRadius + 20, -windowHeight / 2 + baseRadius + 20, 0);
+    noFill();
+    let hue = map(micVol, 0, 1, 180, 0); //color the mic circle base on the micVol
+    stroke(hue, 255, 255);
+    ellipse(0, 0, radius);
+    pop();
 
 
 }
