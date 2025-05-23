@@ -197,9 +197,7 @@ function compareDistances(a, b) { //compare distance
 
 }
 function draw() {
-    //orbitControl(); //need to fix this
     background(255, 30);
-    fill(255, 0, 0);
 
     spectrum = fft.analyze();
     let vol = fft.getEnergy(20, 140);

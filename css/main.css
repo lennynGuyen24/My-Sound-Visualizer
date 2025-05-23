@@ -5,7 +5,7 @@ body{
 .playButton {
   margin:0;
   background: none;
-  color: #5a5a5a;
+  color: #684ff4;
   font-size: 12px;
   font-family: cursive;
   border: 1px solid #bdb2ff;
@@ -17,29 +17,13 @@ body{
 
 .playButton:hover{
     font-weight: 700;
-    color: #222;
+    color: #3b1bf3;
 }
 
-.pauseButton {
-    margin:0;
-    background: none;
-    color: #5a5a5a;
-    font-size: 12px;
-    font-family: cursive;
-    border: 1px solid #a0c4ff;
-    padding: 10px 24px;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 2px 8px #d7f6fa;
-}
-.pauseButton:hover{
-    font-weight: 700;
-    color: #222;
-}
 .changeSong{
   margin:0;
   background: none;
-  color: #5a5a5a;
+  color: #3f3f3f;
   font-size: 12px;
   font-family: cursive;
   border: 1px solid #ffc6ff;
@@ -48,6 +32,7 @@ body{
   cursor: pointer;
   box-shadow: 0 2px 8px #f8e1f4;
 }
+
 .changeSong:hover{
     font-weight: 700;
     color: #222;
@@ -75,8 +60,6 @@ select.changeSong{
 }
 .speakerIcon {
   font-size: 22px;
-  color: #5a5a5a;
-  user-select: none;
 }
 .sliderCust{
   appearance: none;
