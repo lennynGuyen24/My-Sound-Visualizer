@@ -1,7 +1,7 @@
 
 //Original idea + tutorial: https://youtu.be/8O5aCwdopLo?si=s1detCu0abm2zs2s
 
-var song
+var song;
 let songs = ['mp3/renai.mp3', 'mp3/almondChoco.mp3', 'mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/hyperR.mp3', 'mp3/tellUrWorld.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/2mins.mp3', 'mp3/bukanPho.mp3'];
 let currentSongIndex = 0;
 let changeSongButton;
@@ -88,22 +88,13 @@ function setup() {
         });
         console.log('Now playing:', songs[currentSongIndex]);
     });
-    //play button
-    /* playButton = createButton('Play');
-    playButton.parent(buttonSpace);
-    playButton.addClass('playButton');
-    playButton.mousePressed(() => {
-        song.play();
-        loop();
-        songSelector.selected(currentSongIndex);
-    }); */
 
     //toggle play/pause button. Icon source: https://emojidb.org/play-button-emojis
     playButton = createButton('▶');
     playButton.parent(buttonSpace);
     playButton.addClass('playButton');
     playButton.mousePressed(() => {
-        if (!song.isPlaying()) {
+        if (song && song.isLoaded() && !song.isPlaying()) {
             song.play();
             loop();
             playButton.html('❚❚');
@@ -115,16 +106,6 @@ function setup() {
         songSelector.selected(currentSongIndex);
     })
 
-
-    //pause button
-    /* pauseButton = createButton('Pause');
-    pauseButton.parent(buttonSpace);
-    pauseButton.addClass('pauseButton')
-    pauseButton.mousePressed(() => {
-        song.pause();
-        noLoop();
-        songSelector.selected(currentSongIndex);
-    }); */
 
     //change song button
     changeSongButton = createButton('⏭');
@@ -164,10 +145,10 @@ function setup() {
             song.stop();
             currentSongIndex = selectedIndex;
             song = loadSound(songs[currentSongIndex], () => {
-                song.play();
+                //song.play(); => THis caught the error of song not 
                 loop();
             });
-            console.log('Now playing:', songs[currentSongIndex]);
+            console.log('Loaded', songs[currentSongIndex]);
         }
     });
 
@@ -179,7 +160,6 @@ function setup() {
     window.volumeSlider = createSlider(0, 100, 50);
     window.volumeSlider.parent(volumeSliderSpace);
     window.volumeSlider.addClass('sliderCust'); 
-    window.volumeSlider.style('width', '100px');
     window.volumeSlider.input(() => {
         let val = window.volumeSlider.value() / 100;
         window.lastSetVol = val;
@@ -198,6 +178,7 @@ function compareDistances(a, b) { //compare distance
 }
 function draw() {
     background(255, 30);
+    
 
     spectrum = fft.analyze();
     let vol = fft.getEnergy(20, 140);
@@ -318,7 +299,7 @@ function draw() {
             window.lastSetVol = 0.5;
             song.setVolume(window.lastSetVol);
             if (window.volumeSlider) window.volumeSlider.value(50);
-        }, 5000);
+        }, 3000);
     }
 
     //Draw the mic circle
