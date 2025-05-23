@@ -44,6 +44,8 @@ let vol = 0;
 function setup() {
 
     createCanvas(windowWidth, windowHeight, WEBGL);
+     var buttonSpace = select('#buttonSpace');
+    var volumeSliderSpace = select('#volumeSliderSpace');
 
     colorMode(HSB, 255);
     fft = new p5.FFT();
@@ -70,7 +72,7 @@ function setup() {
         }
     }
     distFromCenter.sort(compareDistances);
-    var buttonSpace = select('#buttonSpace');
+   
 
     //previous song button
     prevSongButton = createButton('⏮');
@@ -169,11 +171,14 @@ function setup() {
         }
     });
 
-    // Create volume slider
+    // Create volume slider with speaker icon
+    let speakerIcon = createSpan('🔊');
+    speakerIcon.parent(volumeSliderSpace);
+    speakerIcon.addClass('speakerIcon');
+
     window.volumeSlider = createSlider(0, 100, 50);
-    window.volumeSlider.parent(buttonSpace);
+    window.volumeSlider.parent(volumeSliderSpace);
     window.volumeSlider.addClass('sliderCust'); 
-    window.volumeSlider.position(100, 40);
     window.volumeSlider.style('width', '100px');
     window.volumeSlider.input(() => {
         let val = window.volumeSlider.value() / 100;
