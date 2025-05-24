@@ -1,5 +1,6 @@
 
-//Original idea + tutorial for the main sound visualizer: https://youtu.be/8O5aCwdopLo?si=s1detCu0abm2zs2s
+//Original idea + tutorial for the 3D sound visualizer: https://youtu.be/8O5aCwdopLo?si=s1detCu0abm2zs2s
+//Original idea + Tutorial for the moving Particles: https://youtu.be/uk96O7N1Yo0?si=qB6z4Wlv11RLXnJs
 //Tutorials for HTML/CSS/DOM in p5.js : https://youtube.com/playlist?list=PLRqwX-V7Uu6bI1SlcCRfLH79HZrFAtBvX&si=BkO4deQzh9QsA6OG
 
 
@@ -332,7 +333,7 @@ function draw() {
 }
 
 
-//Original tutorial: https://youtu.be/uk96O7N1Yo0?si=qB6z4Wlv11RLXnJs
+
 class Particle {
     constructor() {
         let r = 200;
