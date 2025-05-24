@@ -5,7 +5,7 @@
 
 
 let song;
-const songs = ['mp3/renai.mp3', 'mp3/almondChoco.mp3', 'mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/tellUrWorld.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/2mins.mp3', 'mp3/bukanPho.mp3'];
+const songs = ['mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/bukanPho.mp3'];
 let currentSongIndex = 0;
 let changeSongButton;
 
@@ -137,8 +137,8 @@ function setup() {
     songSelector.parent(buttonSpace);
     songSelector.addClass('changeSong');
     let songNames = [
-        "1.Renai Circulation-Kana Hanazawa", "2.Almond Chocolate-ILLIT", "3.Magnetic-ILLIT", "4.See Tinh-Hoang Thuy Linh",
-        "5.Tell Your World Remix-Hatsune Miku", "6.Kawaikute Gomen Remix-HoneyWorks", "7.SuMuZhe Remix-Zhang Xiaotan", "8.2 Phut Hon-Phao", "9.De Yang Gatal Gatal Sa-Bukan Pho DJ DESA Remix"
+        "1.Magnetic-ILLIT", "2.See Tinh-Hoang Thuy Linh",
+        "3.Kawaikute Gomen Remix-HoneyWorks", "4.SuMuZhe Remix-Zhang Xiaotan", "5.De Yang Gatal Gatal Sa-Bukan Pho DJ DESA Remix"
     ];
 
     // Populate the dropdown with song names
@@ -324,8 +324,7 @@ function draw() {
     resetMatrix();
     translate(-windowWidth / 2 + baseRadius + 20, -windowHeight / 2 + baseRadius + 20, 0);
     noFill();
-    let hue = map(micVol, 0, 1, 180, 0); //color the mic circle base on the micVol
-    stroke(hue, 255, 255);
+    stroke(180, 255, 255);
     ellipse(0, 0, radius);
     pop();
 
