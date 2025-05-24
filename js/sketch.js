@@ -8,6 +8,7 @@ let changeSongButton;
 
 function preload() {
     song = loadSound(songs[currentSongIndex]);
+    song.setVolume(window.lastSetVol || 0.5);
     console.log('Now playing:', songs[currentSongIndex]);
 
 }
@@ -82,6 +83,7 @@ function setup() {
         song.stop();
         currentSongIndex = (currentSongIndex - 1) % songs.length;
         song = loadSound(songs[currentSongIndex], () => {
+            
             song.play();
             loop();
             songSelector.selected(currentSongIndex);
@@ -128,8 +130,8 @@ function setup() {
     songSelector.parent(buttonSpace);
     songSelector.addClass('changeSong');
     let songNames = [
-        "Renai Circulation-Kana Hanazawa", "Almond Chocolate-ILLIT", "Magnetic-ILLIT", "See Tinh-Hoang Thuy Linh", "Hyper Reality Show-Hatsune Miku",
-        "Tell Your World Remix-Hatsune Miku", "Kawaikute Gomen Remix-HoneyWorks", "SuMuZhe Remix-Zhang Xiaotan", "2 Phut Hon-Phao", "De Yang Gatal Gatal Sa-Bukan Pho DJ DESA Remix"
+        "1.Renai Circulation-Kana Hanazawa", "2.Almond Chocolate-ILLIT", "3.Magnetic-ILLIT", "4.See Tinh-Hoang Thuy Linh", "5.Hyper Reality Show-Hatsune Miku",
+        "6.Tell Your World Remix-Hatsune Miku", "7.Kawaikute Gomen Remix-HoneyWorks", "8.SuMuZhe Remix-Zhang Xiaotan", "9.2 Phut Hon-Phao", "10.De Yang Gatal Gatal Sa-Bukan Pho DJ DESA Remix"
     ];
 
     // Populate the dropdown with song names
@@ -145,7 +147,7 @@ function setup() {
             song.stop();
             currentSongIndex = selectedIndex;
             song = loadSound(songs[currentSongIndex], () => {
-                //song.play(); => THis caught the error of song not 
+                //song.play(); => THis caught the error of song not ready to play
                 loop();
             });
             console.log('Loaded', songs[currentSongIndex]);
@@ -288,7 +290,7 @@ function draw() {
     //MIC INTERACTING FUNCTION!!! (change the song volume)
     let micVol = mic.getLevel();
     // Change the slider when the volume is out of limit
-    if (!window.lastSetVol) window.lastSetVol = 0;
+    if (!window.lastSetVol) window.lastSetVol = 0.5;
     let targetVol = constrain(micVol * 5, 0, 1);
     if (targetVol > window.lastSetVol + 0.02) {
         window.lastSetVol = targetVol;
