@@ -1,51 +1,48 @@
 
-//Original idea + tutorial: https://youtu.be/8O5aCwdopLo?si=s1detCu0abm2zs2s
+//Original idea + tutorial for the main sound visualizer: https://youtu.be/8O5aCwdopLo?si=s1detCu0abm2zs2s
+//Tutorials for HTML/CSS/DOM in p5.js : https://youtube.com/playlist?list=PLRqwX-V7Uu6bI1SlcCRfLH79HZrFAtBvX&si=BkO4deQzh9QsA6OG
 
-var song;
-let songs = ['mp3/renai.mp3', 'mp3/almondChoco.mp3', 'mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/hyperR.mp3', 'mp3/tellUrWorld.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/2mins.mp3', 'mp3/bukanPho.mp3'];
+
+let song;
+const songs = ['mp3/renai.mp3', 'mp3/almondChoco.mp3', 'mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/tellUrWorld.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/2mins.mp3', 'mp3/bukanPho.mp3'];
 let currentSongIndex = 0;
 let changeSongButton;
-
-function preload() {
-    song = loadSound(songs[currentSongIndex]);
-    song.setVolume(window.lastSetVol || 0.5);
-    console.log('Now playing:', songs[currentSongIndex]);
-
-}
 
 var canvas;
 let playButton, pauseButton;
 let smoothing = 0.8;
 let bins = 512;
+let min = 150;
+let size = 20;
+let num = 10;
+
+
 let fft;
 let waveform = [];
 let r = 100;
 let spectrum = [];
-let min = 150;
 let distFromCenter = [];
-
-
-
-var particles = [];
-let size = 20;
-let num = 10;
 let grid = [];
+var particles = [];
 let smoothedAvgFreq = 0;
 
 //Volume control by mic
 let mic;
 let vol = 0;
 
+function preload() { //Load the first song
+    song = loadSound(songs[currentSongIndex]);
+    song.setVolume(window.lastSetVol || 0.5);
+    console.log('Now playing:', songs[currentSongIndex]);
 
-
-
-
+}
 
 
 function setup() {
 
     createCanvas(windowWidth, windowHeight, WEBGL);
-     var buttonSpace = select('#buttonSpace');
+
+    var buttonSpace = select('#buttonSpace');
     var volumeSliderSpace = select('#volumeSliderSpace');
 
     colorMode(HSB, 255);
@@ -53,6 +50,8 @@ function setup() {
     mic = new p5.AudioIn(); //create a new mic
     mic.start();
     angleMode(DEGREES);
+
+    //Build 3D grid and distance array
     for (let boxes = 0; boxes < num; boxes++) {
         grid[boxes] = [];
         for (let boxes2 = 0; boxes2 < num; boxes2++) {
@@ -75,7 +74,7 @@ function setup() {
     distFromCenter.sort(compareDistances);
    
 
-    //previous song button
+    // Previous song button
     prevSongButton = createButton('⏮');
     prevSongButton.parent(buttonSpace);
     prevSongButton.addClass('changeSong');
@@ -83,33 +82,39 @@ function setup() {
         song.stop();
         currentSongIndex = (currentSongIndex - 1) % songs.length;
         song = loadSound(songs[currentSongIndex], () => {
-            
             song.play();
-            loop();
+            playButton.html('❚❚');
+            song.onended(() => {
+                playButton.html('▶');
+            });
+            //loop();
             songSelector.selected(currentSongIndex);
         });
         console.log('Now playing:', songs[currentSongIndex]);
     });
 
-    //toggle play/pause button. Icon source: https://emojidb.org/play-button-emojis
+    // Toggle Play/Pause button. Icon source: https://emojidb.org/play-button-emojis
     playButton = createButton('▶');
     playButton.parent(buttonSpace);
     playButton.addClass('playButton');
     playButton.mousePressed(() => {
         if (song && song.isLoaded() && !song.isPlaying()) {
             song.play();
-            loop();
+            //loop();
             playButton.html('❚❚');
+            song.onended(() => {
+                playButton.html('▶');
+        });
         } else {
             song.pause();
-            noLoop();
+            //noLoop();
             playButton.html('▶');
         }
         songSelector.selected(currentSongIndex);
     })
 
 
-    //change song button
+    //Next song button
     changeSongButton = createButton('⏭');
     changeSongButton.parent(buttonSpace);
     changeSongButton.addClass('changeSong');
@@ -119,19 +124,20 @@ function setup() {
         song = loadSound(songs[currentSongIndex], () => {
             song.play();
             loop();
+            playButton.html('❚❚');
             songSelector.selected(currentSongIndex);
 
         });
         console.log('Now playing:', songs[currentSongIndex]);
     });
 
-    //Select songs button
+    // Song selection dropdown
     let songSelector = createSelect();
     songSelector.parent(buttonSpace);
     songSelector.addClass('changeSong');
     let songNames = [
-        "1.Renai Circulation-Kana Hanazawa", "2.Almond Chocolate-ILLIT", "3.Magnetic-ILLIT", "4.See Tinh-Hoang Thuy Linh", "5.Hyper Reality Show-Hatsune Miku",
-        "6.Tell Your World Remix-Hatsune Miku", "7.Kawaikute Gomen Remix-HoneyWorks", "8.SuMuZhe Remix-Zhang Xiaotan", "9.2 Phut Hon-Phao", "10.De Yang Gatal Gatal Sa-Bukan Pho DJ DESA Remix"
+        "1.Renai Circulation-Kana Hanazawa", "2.Almond Chocolate-ILLIT", "3.Magnetic-ILLIT", "4.See Tinh-Hoang Thuy Linh",
+        "5.Tell Your World Remix-Hatsune Miku", "6.Kawaikute Gomen Remix-HoneyWorks", "7.SuMuZhe Remix-Zhang Xiaotan", "8.2 Phut Hon-Phao", "9.De Yang Gatal Gatal Sa-Bukan Pho DJ DESA Remix"
     ];
 
     // Populate the dropdown with song names
@@ -147,8 +153,13 @@ function setup() {
             song.stop();
             currentSongIndex = selectedIndex;
             song = loadSound(songs[currentSongIndex], () => {
-                //song.play(); => THis caught the error of song not ready to play
-                loop();
+                //loop();
+                playButton.html('▶');
+                song.onended(() => {
+                    playButton.html('▶');
+                });
+                //Not auto-play
+                songSelector.selected(currentSongIndex);
             });
             console.log('Loaded', songs[currentSongIndex]);
         }
@@ -321,7 +332,7 @@ function draw() {
 }
 
 
-
+//Original tutorial: https://youtu.be/uk96O7N1Yo0?si=qB6z4Wlv11RLXnJs
 class Particle {
     constructor() {
         let r = 200;
