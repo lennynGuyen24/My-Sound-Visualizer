@@ -5,7 +5,11 @@
 
 
 let song;
-const songs = ['mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/bukanPho.mp3'];
+const songs = ['mp3/drum.mp3','mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/bukanPho.mp3'];
+let songNames = ["0.Drum",
+        "1.Magnetic-ILLIT", "2.See Tinh-Hoang Thuy Linh",
+        "3.Kawaikute Gomen Remix-HoneyWorks", "4.SuMuZhe Remix-Zhang Xiaotan", "5.De Yang Gatal Gatal Sa-Bukan Pho DJ DESA Remix"
+    ];
 let currentSongIndex = 0;
 let changeSongButton;
 
@@ -81,7 +85,7 @@ function setup() {
     prevSongButton.addClass('changeSong');
     prevSongButton.mousePressed(() => {
         song.stop();
-        currentSongIndex = (currentSongIndex - 1) % songs.length;
+        currentSongIndex = (currentSongIndex - 1) % songs.length; //Formula to calculate previous song
         song = loadSound(songs[currentSongIndex], () => {
             song.play();
             playButton.html('❚❚');
@@ -121,7 +125,7 @@ function setup() {
     changeSongButton.addClass('changeSong');
     changeSongButton.mousePressed(() => {
         song.stop();
-        currentSongIndex = (currentSongIndex + 1) % songs.length;
+        currentSongIndex = (currentSongIndex + 1) % songs.length; //Formula to calculate next song
         song = loadSound(songs[currentSongIndex], () => {
             song.play();
             loop();
@@ -136,10 +140,7 @@ function setup() {
     let songSelector = createSelect();
     songSelector.parent(buttonSpace);
     songSelector.addClass('changeSong');
-    let songNames = [
-        "1.Magnetic-ILLIT", "2.See Tinh-Hoang Thuy Linh",
-        "3.Kawaikute Gomen Remix-HoneyWorks", "4.SuMuZhe Remix-Zhang Xiaotan", "5.De Yang Gatal Gatal Sa-Bukan Pho DJ DESA Remix"
-    ];
+    
 
     // Populate the dropdown with song names
     for (let i = 0; i < songs.length; i++) {
@@ -155,7 +156,7 @@ function setup() {
             currentSongIndex = selectedIndex;
             song = loadSound(songs[currentSongIndex], () => {
                 //loop();
-                playButton.html('▶');
+                //playButton.html('▶');
                 song.onended(() => {
                     playButton.html('▶');
                 });
