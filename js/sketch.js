@@ -85,7 +85,7 @@ function setup() {
     prevSongButton.addClass('changeSong');
     prevSongButton.mousePressed(() => {
         song.stop();
-        currentSongIndex = (currentSongIndex - 1) % songs.length; //Formula to calculate previous song
+        currentSongIndex = (currentSongIndex - 1+ songs.length) % songs.length; //Formula to calculate previous song
         song = loadSound(songs[currentSongIndex], () => {
             song.play();
             playButton.html('❚❚');
@@ -302,12 +302,11 @@ function draw() {
 
     //MIC INTERACTING FUNCTION!!! (change the song volume)
     let micVol = mic.getLevel();
-    // Change the slider when the volume is out of limit
     if (!window.lastSetVol) window.lastSetVol = 0.5;
     let targetVol = constrain(micVol * 5, 0, 1);
     if (targetVol > window.lastSetVol + 0.02) {
         window.lastSetVol = targetVol;
-        song.setVolume(window.lastSetVol);
+        song.setVolume(window.lastSetVol); //Apply the new volume to the song
         if (window.volumeSlider) window.volumeSlider.value(window.lastSetVol * 100);
         if (window.volumeTimeout) clearTimeout(window.volumeTimeout);
         window.volumeTimeout = setTimeout(() => {
