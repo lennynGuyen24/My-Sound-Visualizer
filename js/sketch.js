@@ -308,8 +308,8 @@ function draw() {
         window.lastSetVol = targetVol;
         song.setVolume(window.lastSetVol); //Apply the new volume to the song
         if (window.volumeSlider) window.volumeSlider.value(window.lastSetVol * 100);
-        if (window.volumeTimeout) clearTimeout(window.volumeTimeout);
-        window.volumeTimeout = setTimeout(() => {
+        if (window.volumeTimeout) clearTimeout(window.volumeTimeout);//clear any existing timeout to avoid multiple resets.
+        window.volumeTimeout = setTimeout(() => {//set a timeout so the vol and mic reset to 0.5
             window.lastSetVol = 0.5;
             song.setVolume(window.lastSetVol);
             if (window.volumeSlider) window.volumeSlider.value(50);
