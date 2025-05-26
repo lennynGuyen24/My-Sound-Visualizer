@@ -55,7 +55,8 @@ function setup() {
     mic.start();
     angleMode(DEGREES);
 
-    //Build 3D grid and distance array
+    //Build 3D grid and distance array. 
+    //Calculates the distance of each grid cell from the center of the grid.
     for (let boxes = 0; boxes < num; boxes++) {
         grid[boxes] = [];
         for (let boxes2 = 0; boxes2 < num; boxes2++) {
