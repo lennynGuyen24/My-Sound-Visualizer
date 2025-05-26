@@ -5,11 +5,10 @@
 
 
 let song;
-const songs = ['mp3/drum.mp3','mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/bukanPho.mp3'];
-let songNames = ["0.Drum",
-        "1.Magnetic-ILLIT", "2.See Tinh-Hoang Thuy Linh",
-        "3.Kawaikute Gomen Remix-HoneyWorks", "4.SuMuZhe Remix-Zhang Xiaotan", "5.De Yang Gatal Gatal Sa-Bukan Pho DJ DESA Remix"
-    ];
+const songs = ['mp3/magnetic.mp3', 'mp3/seeLove.mp3', 'mp3/kawaiiRemix.mp3', 'mp3/suMuZheRemix.mp3', 'mp3/bukanPho.mp3', 'mp3/drum.mp3'];
+let songNames = ["1.Magnetic-ILLIT", "2.See Tinh-Hoang Thuy Linh",
+    "3.Kawaikute Gomen Remix-HoneyWorks", "4.SuMuZhe Remix-Zhang Xiaotan", "5.De Yang Gatal Gatal Sa-Bukan Pho DJ DESA Remix", "6.Drum"
+];
 let currentSongIndex = 0;
 let changeSongButton;
 
@@ -77,7 +76,7 @@ function setup() {
         }
     }
     distFromCenter.sort(compareDistances);
-   
+
 
     // Previous song button
     prevSongButton = createButton('⏮');
@@ -109,7 +108,7 @@ function setup() {
             playButton.html('❚❚');
             song.onended(() => {
                 playButton.html('▶');
-        });
+            });
         } else {
             song.pause();
             //noLoop();
@@ -140,7 +139,7 @@ function setup() {
     let songSelector = createSelect();
     songSelector.parent(buttonSpace);
     songSelector.addClass('changeSong');
-    
+
 
     // Populate the dropdown with song names
     for (let i = 0; i < songs.length; i++) {
@@ -174,7 +173,7 @@ function setup() {
 
     window.volumeSlider = createSlider(0, 100, 50);
     window.volumeSlider.parent(volumeSliderSpace);
-    window.volumeSlider.addClass('sliderCust'); 
+    window.volumeSlider.addClass('sliderCust');
     window.volumeSlider.input(() => {
         let val = window.volumeSlider.value() / 100;
         window.lastSetVol = val;
@@ -193,7 +192,7 @@ function compareDistances(a, b) { //compare distance
 }
 function draw() {
     background(255, 30);
-    
+
 
     spectrum = fft.analyze();
     let vol = fft.getEnergy(20, 140);
